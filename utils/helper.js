@@ -5,44 +5,18 @@ export function getDataBaseOnMethod(
   limit,
   page,
   data,
-  query,
   dataSeter
 ) {
   switch (methodType) {
     case "TOP_TRACKS":
       getTopList(METHOD[methodType], limit, page).then((res) => {
-        setIfNotError(res.error, data, res.tracks.track, dataSeter);
+        setIfNotError(res.error, data, res.tracks.track, dataSeter, res.tracks["@attr"].totalPages);
       });
       break;
     case "TOP_ARTISTS":
       getTopList(METHOD[methodType], limit, page).then((res) => {
-        setIfNotError(res.error, data, res.artists.artist, dataSeter);
+        setIfNotError(res.error, data, res.artists.artist, dataSeter, res.artists["@attr"].totalPages);
       });
-      break;
-    case "SEARCH":
-      if (query?.type === "Artist") {
-        getSearchList(METHOD["ARTIS_SEARCH"], limit, page, query?.keyword).then(
-          (res) => {
-            setIfNotError(
-              res.error,
-              data,
-              res.results?.artistmatches.artis,
-              dataSeter
-            );
-          }
-        );
-      } else if (query?.type === "Track") {
-        getSearchList(METHOD["TRACK_SEARCH"], limit, page, query?.keyword).then(
-          (res) => {
-            setIfNotError(
-              res.error,
-              data,
-              res.results?.trackmatches.track,
-              dataSeter
-            );
-          }
-        );
-      }
       break;
 
     default:
@@ -51,27 +25,38 @@ export function getDataBaseOnMethod(
 }
 
 export function searchData(query, limit, page, dataSeter) {
+  // search no need load more set totalPage to 0
   if (query?.type === "Artist") {
     getSearchList(METHOD["ARTIS_SEARCH"], limit, page, query?.keyword).then(
       (res) => {
-        if (!res.error) {
-          dataSeter(res.results?.artistmatches.artist);
-        }
+        setIfNotError(
+          res.error,
+          [],
+          res.results?.artistmatches.artist,
+          dataSeter,
+          0
+        );
       }
     );
   } else if (query?.type === "Track") {
     getSearchList(METHOD["TRACK_SEARCH"], limit, page, query?.keyword).then(
       (res) => {
-        if (!res.error) {
-          dataSeter(res.results?.trackmatches.track);
-        }
+        setIfNotError(
+          res.error,
+          [],
+          res.results?.trackmatches.track,
+          dataSeter,
+          0
+        );
       }
     );
   }
 }
 
-function setIfNotError(error, tempData, data, dataSeter) {
-  if (!error) {
-    dataSeter([...tempData, ...data]);
+function setIfNotError(error, tempData, data, dataSeter, totPage) {
+  if (!error && data) {
+    dataSeter({result: [...tempData, ...data], totPage: totPage});
+  } else {
+    dataSeter({ error: true });
   }
 }

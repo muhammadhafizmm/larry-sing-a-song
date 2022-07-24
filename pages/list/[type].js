@@ -10,7 +10,7 @@ import { getDataBaseOnMethod, searchData } from "../../utils/helper";
 export default function ListPage() {
   const LIMIT = 6;
   const [page, setPage] = useState(1);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({});
   const [query, setQuery] = useState({});
 
   const router = useRouter();
@@ -30,7 +30,7 @@ export default function ListPage() {
   // Search data every methodType and Page Change
   useEffect(() => {
     if (methodType) {
-      let tempData = data;
+      let tempData = data.result ? data.result : [];
       let tempPage = page;
       if (prevMethodType !== methodType) {
         tempPage = 1;
@@ -42,9 +42,8 @@ export default function ListPage() {
       getDataBaseOnMethod(
         methodType,
         LIMIT,
+        tempPage,
         tempData,
-        tempData,
-        query,
         setData
       );
     }
@@ -54,7 +53,6 @@ export default function ListPage() {
   useEffect(() => {
     searchData(query, LIMIT, page, setData);
   }, [query]);
-
   return (
     // This minH Base on screenSize - headerNavSize - footerSize
     <Stack
@@ -73,7 +71,7 @@ export default function ListPage() {
         <List data={data}></List>
       )}
       {/* Hide if data empty */}
-      {data && data.length && (
+      {data.totPage > page ? (
         <Box
           backgroundColor={color.active}
           padding=".5em 1em"
@@ -86,7 +84,7 @@ export default function ListPage() {
         >
           <Text fontSize={{ base: "1em", md: "1.2em" }}>Load More!</Text>
         </Box>
-      )}
+      ) : null}
     </Stack>
   );
 }

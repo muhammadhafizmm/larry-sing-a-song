@@ -7,7 +7,7 @@ import {
   Skeleton,
 } from "@chakra-ui/react";
 
-export default function List({ data }) {
+function ListComponent({ data }) {
   const convertLongString = (str) => {
     return str && str.length > 22 ? str.slice(0, 25) + "..." : str;
   };
@@ -18,21 +18,27 @@ export default function List({ data }) {
       component.push(
         <Flex w={{ base: "80vw", md: "500px" }} key={i}>
           <Flex justifyContent="center" alignItems="center" marginRight="1em">
-            <Text fontSize={{ base: "1em", sm: "1.2em", md: "1.5em" }}>{i+1}.</Text>
+            <Text fontSize={{ base: "1em", sm: "1.2em", md: "1.5em" }}>
+              {i + 1}.
+            </Text>
           </Flex>
           <Flex
             justifyContent="space-between"
             alignItems="center"
             width="inherit"
           >
-            <Skeleton w="50%" h={{ base: "1em", sm: "1.2em", md: "1.5em" }}></Skeleton>
+            <Skeleton
+              w="50%"
+              h={{ base: "1em", sm: "1.2em", md: "1.5em" }}
+            ></Skeleton>
             <Skeleton width="32px" height="32px" borderRadius="8px"></Skeleton>
           </Flex>
         </Flex>
       );
     }
-    return component
+    return component;
   };
+
   return (
     <VStack
       divider={
@@ -45,30 +51,64 @@ export default function List({ data }) {
       spacing=".8em"
       align="stretch"
     >
-      {data && data.length ? (
-        data.map((item, idx) => (
-          <Flex w={{ base: "80vw", md: "500px" }} key={idx}>
-            <Flex justifyContent="center" alignItems="center" marginRight="1em">
-              <Text fontSize={{ base: "1em", sm: "1.2em", md: "1.5em" }}>{idx + 1}.</Text>
-            </Flex>
-            <Flex
-              justifyContent="space-between"
-              alignItems="center"
-              width="inherit"
-            >
-              <Text fontSize={{ base: "1em", sm: "1.2em", md: "1.5em" }}>{convertLongString(item.name)}</Text>
-              <Box width="32px" height="32px"  borderRadius="8px" backgroundColor="gray.100"></Box>
-              {/* API not provide image, always use same image */}
-              {/* <Image
+      {data.result && data.result.length
+        ? data.result.map((item, idx) => (
+            <Flex w={{ base: "80vw", md: "500px" }} key={idx}>
+              <Flex
+                justifyContent="center"
+                alignItems="center"
+                marginRight="1em"
+              >
+                <Text fontSize={{ base: "1em", sm: "1.2em", md: "1.5em" }}>
+                  {idx + 1}.
+                </Text>
+              </Flex>
+              <Flex
+                justifyContent="space-between"
+                alignItems="center"
+                width="inherit"
+              >
+                <Text fontSize={{ base: "1em", sm: "1.2em", md: "1.5em" }}>
+                  {convertLongString(item.name)}
+                </Text>
+                <Box
+                  width="32px"
+                  height="32px"
+                  borderRadius="8px"
+                  backgroundColor="gray.100"
+                ></Box>
+                {/* API not provide image, always use same image */}
+                {/* <Image
                 src={item.image[0]["#text"]}
                 width="32px"
                 height="32px"
                 borderRadius="8px"
               ></Image> */}
+              </Flex>
             </Flex>
-          </Flex>
-        ))
-      ) : (skeletonList())}
+          ))
+        : skeletonList()}
     </VStack>
   );
+}
+
+function ListError({ text }) {
+  return (
+    <Box>
+      <Text>{text}</Text>
+    </Box>
+  );
+}
+
+export default function List({ data }) {
+  let component;
+  if (!data?.error) {
+    component = <ListComponent data={data} />;
+  } else if (data?.error && !data.search) {
+    // not implemented because of time
+    component = <ListError text={"Search not found :("} />;
+  } else {
+    component = <ListError text={"Connection failed :("} />;
+  }
+  return component;
 }
