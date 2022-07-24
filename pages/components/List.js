@@ -51,7 +51,7 @@ function ListComponent({ data }) {
       spacing=".8em"
       align="stretch"
     >
-      {data.result && data.result.length
+      {data?.result && data.result.length
         ? data.result.map((item, idx) => (
             <Flex w={{ base: "80vw", md: "500px" }} key={idx}>
               <Flex
