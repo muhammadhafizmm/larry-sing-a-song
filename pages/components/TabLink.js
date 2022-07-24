@@ -1,6 +1,6 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { color } from "../../styles/utils";
+import color from "../../utils/color";
 
 export default function TabLink({ active }) {
   const router = useRouter();

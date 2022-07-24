@@ -7,7 +7,7 @@ import {
   Skeleton,
 } from "@chakra-ui/react";
 
-export function List({ data }) {
+export default function List({ data }) {
   const convertLongString = (str) => {
     return str && str.length > 22 ? str.slice(0, 25) + "..." : str;
   };

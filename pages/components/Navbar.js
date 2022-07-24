@@ -1,6 +1,6 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { color } from "../../styles/utils";
+import color from "../../utils/color";
 import { SearchIcon } from "@chakra-ui/icons";
 
 export default function Navbar() {

@@ -1,4 +1,4 @@
-import { getSearchList, getTopList, METHOD } from "../../api/api";
+import { getSearchList, getTopList, METHOD } from "../pages/api/api";
 
 export function getDataBaseOnMethod(
   methodType,

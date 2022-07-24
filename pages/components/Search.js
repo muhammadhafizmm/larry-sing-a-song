@@ -1,7 +1,7 @@
 import { Flex, Box, Text, Input } from "@chakra-ui/react";
 import { useState } from "react";
 import { ChevronDownIcon, SearchIcon } from "@chakra-ui/icons";
-import { color } from "../../styles/utils";
+import color from "../../utils/color";
 
 export default function Search({ setQuery }) {
   const [type, setType] = useState("Artist");

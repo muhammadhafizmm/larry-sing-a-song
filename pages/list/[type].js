@@ -1,11 +1,11 @@
 import { Text, Stack, Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-import { color } from "../../../styles/utils";
-import { List } from "../../components/List";
-import Search from "../../components/Search";
-import TabLink from "../../components/TabLink";
-import { getDataBaseOnMethod, searchData } from "./helper";
+import color from "../../utils/color";
+import List from "../components/List";
+import Search from "../components/Search";
+import TabLink from "../components/TabLink";
+import { getDataBaseOnMethod, searchData } from "../../utils/helper";
 
 export default function ListPage() {
   const LIMIT = 6;
@@ -39,13 +39,20 @@ export default function ListPage() {
         setPage(tempPage);
         setData(tempData);
       }
-      getDataBaseOnMethod(methodType, LIMIT, tempData, tempData, query, setData)
+      getDataBaseOnMethod(
+        methodType,
+        LIMIT,
+        tempData,
+        tempData,
+        query,
+        setData
+      );
     }
   }, [methodType, page]);
 
-  // Search data every query changes 
+  // Search data every query changes
   useEffect(() => {
-    searchData(query, LIMIT, page, setData)
+    searchData(query, LIMIT, page, setData);
   }, [query]);
 
   return (
@@ -75,7 +82,7 @@ export default function ListPage() {
           cursor="pointer"
           onClick={() => setPage(page + 1)}
           transition="all .2s"
-          _hover={{backgroundColor:"#7f1d1d"}}
+          _hover={{ backgroundColor: "#7f1d1d" }}
         >
           <Text fontSize={{ base: "1em", md: "1.2em" }}>Load More!</Text>
         </Box>

@@ -1,5 +1,5 @@
 import { Flex, Text } from "@chakra-ui/react";
-import { color } from "../../styles/utils";
+import color from "../../utils/color"
 
 export default function Footer() {
   return (
