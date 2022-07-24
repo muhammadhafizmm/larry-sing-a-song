@@ -39,19 +39,28 @@ export default function ListPage() {
         setPage(tempPage);
         setData(tempData);
       }
-      getDataBaseOnMethod(
-        methodType,
-        LIMIT,
-        tempPage,
-        tempData,
-        setData
-      );
+      try {
+        getDataBaseOnMethod(
+          methodType,
+          LIMIT,
+          tempPage,
+          tempData,
+          setData
+        );
+      } catch {
+        setData({error: true})
+      }
+      
     }
   }, [methodType, page]);
 
   // Search data every query changes
   useEffect(() => {
-    searchData(query, LIMIT, page, setData);
+    try {
+      searchData(query, LIMIT, page, setData);
+    } catch {
+      setData({error: true})
+    }
   }, [query]);
   return (
     // This minH Base on screenSize - headerNavSize - footerSize
