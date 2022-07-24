@@ -1,16 +1,13 @@
 import { Flex, Box, Text, Image } from "@chakra-ui/react";
-import { color } from "../styles/utils";
 import TikTokImage from "../public/tiktok-logo.png";
+import MonalisaImage from "../public/monalisa.png";
+import TabLink  from "./components/TabLink";
 
 export default function Home() {
-  const tabLink = {
-    "Top Track": "/",
-    "Top Artist": "/",
-    "Top Search": "/",
-  };
   return (
+    // This minH Base on screenSize - headerNavSize - footerSize
     <Flex
-      height="calc(100vh - 40px - (32px * 2) - (24px * 4))"
+      minH="calc(100vh - 40px - (32px * 2) - (24px * 4))"
       justifyContent="center"
       alignItems="center"
       flexDirection="column"
@@ -19,31 +16,26 @@ export default function Home() {
         <Image
           src={TikTokImage.src}
           position="absolute"
-          top="-95px"
-          right="-95px"
-          boxSize="150px"
+          top={{ base: '-47px', md: "-70px" }}
+          right={{ base: '-50px', md: '-95px' }}
+          boxSize={{ base: '100px', md: '150px' }}
         ></Image>
-        <Text fontSize="5em">Larry Sing</Text>
-        <Text fontSize="5em">
+        <Text fontSize={{ base: '3em', md: '5em' }}>Larry Sing</Text>
+        <Box fontSize={{ base: '3em', md: '5em' }}>
           a Song{" "}
           <Text display="inline" letterSpacing="15px">
             ...
           </Text>
-        </Text>
+        </Box>
+        <Image
+          src={MonalisaImage.src}
+          position="absolute"
+          bottom={{ base: '-80px', md: "-120px" }}
+          left={{ base: '-76px', md: '-140px' }}
+          boxSize={{ base: '130px', md: '200px' }}
+        ></Image>
       </Box>
-      <Flex width="420px" justifyContent="space-between" paddingTop={"2em"}>
-        {Object.keys(tabLink).map((title, key) => (
-          <Text
-            fontSize="1.5em"
-            cursor="pointer"
-            color={color.disable}
-            _hover={{ color: color.active }}
-            key={key}
-          >
-            {title}
-          </Text>
-        ))}
-      </Flex>
+      <TabLink />
     </Flex>
   );
 }
